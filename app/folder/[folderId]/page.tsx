@@ -3,11 +3,7 @@ import { Suspense } from "react";
 import FolderTitle from "@/components/folder-title";
 import MainSection from "@/components/main-section";
 import MainSectionFallback from "@/components/main-section-fallback";
-import {
-  folders,
-  getFolderById,
-  getLinksByFolderId,
-} from "@/lib/mock-data";
+import { folders, getFolderById, getLinksByFolderId } from "@/lib/mock-data";
 
 export function generateStaticParams() {
   return folders.map((folder) => ({ folderId: folder.id }));
@@ -47,7 +43,6 @@ async function FolderContent({
     <MainSection
       title={<FolderTitle folderId={folderId} />}
       links={getLinksByFolderId(folderId)}
-      folders={folders}
     />
   );
 }

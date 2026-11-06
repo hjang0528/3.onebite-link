@@ -1,18 +1,13 @@
 import LinkGrid from "@/components/link-grid";
 import type { ReactNode } from "react";
-import type { Folder, LinkItem } from "@/lib/types";
+import type { LinkItem } from "@/lib/types";
 
 interface MainSectionProps {
   title: ReactNode;
   links: LinkItem[];
-  folders: Folder[];
 }
 
-export default function MainSection({
-  title,
-  links,
-  folders,
-}: MainSectionProps) {
+export default function MainSection({ title, links }: MainSectionProps) {
   return (
     <main className="flex min-w-0 flex-1 flex-col gap-12">
       <div className="flex flex-col gap-2">
@@ -23,7 +18,7 @@ export default function MainSection({
           링크 {links.length}개
         </p>
       </div>
-      <LinkGrid links={links} folders={folders} />
+      <LinkGrid links={links} />
     </main>
   );
 }

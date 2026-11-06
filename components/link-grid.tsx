@@ -1,12 +1,7 @@
 import LinkCard from "@/components/link-card";
-import type { Folder, LinkItem } from "@/lib/types";
+import type { LinkItem } from "@/lib/types";
 
-interface LinkGridProps {
-  links: LinkItem[];
-  folders: Folder[];
-}
-
-export default function LinkGrid({ links, folders }: LinkGridProps) {
+export default function LinkGrid({ links }: { links: LinkItem[] }) {
   if (links.length === 0) {
     return (
       <div className="card px-6 py-16 text-center">
@@ -23,10 +18,7 @@ export default function LinkGrid({ links, folders }: LinkGridProps) {
     <ul className="grid grid-cols-1 gap-5 lg:grid-cols-2">
       {links.map((link) => (
         <li key={link.id} className="flex">
-          <LinkCard
-            link={link}
-            folder={folders.find((folder) => folder.id === link.folderId)}
-          />
+          <LinkCard link={link} />
         </li>
       ))}
     </ul>

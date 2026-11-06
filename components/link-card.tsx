@@ -1,12 +1,8 @@
+import FolderBadge from "@/components/folder-badge";
 import { formatDate, getHostname } from "@/lib/utils";
-import type { Folder, LinkItem } from "@/lib/types";
+import type { LinkItem } from "@/lib/types";
 
-interface LinkCardProps {
-  link: LinkItem;
-  folder?: Folder;
-}
-
-export default function LinkCard({ link, folder }: LinkCardProps) {
+export default function LinkCard({ link }: { link: LinkItem }) {
   return (
     <a
       href={link.url}
@@ -27,12 +23,7 @@ export default function LinkCard({ link, folder }: LinkCardProps) {
       </p>
 
       <div className="mt-auto flex items-center gap-3 pt-3">
-        {folder && (
-          <span className="badge inline-flex items-center gap-1 px-3 py-1 text-[13px]">
-            <span aria-hidden="true">{folder.emoji}</span>
-            {folder.name}
-          </span>
-        )}
+        <FolderBadge folderId={link.folderId} />
         <time
           dateTime={link.createdAt}
           className="ml-auto text-[14px] text-[var(--text-sub)]"
