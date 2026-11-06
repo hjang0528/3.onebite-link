@@ -1,26 +1,219 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  /* 라이트모드 전용 팔레트 */
+  --bg: #ffffff;
+  --surface: #fbfbfd;
+  --surface-hover: #f5f5f7;
+  --text: #1d1d1f;
+  --text-sub: #86868b;
+  /* 가이드의 #aeaeb2는 흰 배경에서 2.21:1 이라 3:1 기준 미달 → 어둡게 조정 */
+  --placeholder: #8e8e93;
+  --border: #d2d2d7;
+  --divider: #e8e8ed;
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
+  --badge-bg: #f5f5f7;
+  --error: #ff3b30;
+  --error-hover: #e8372c;
+  --success: #34c759;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --radius-card: 12px;
+  --radius-field: 10px;
+  --radius-pill: 980px;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-modal: 0 12px 40px rgba(0, 0, 0, 0.16);
+  --focus-ring: 0 0 0 3px rgba(0, 113, 227, 0.2);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", system-ui,
+    sans-serif;
+}
+
+/* ===== 네비게이션 ===== */
+.nav-bar {
+  background: rgba(255, 255, 255, 0.72);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--divider);
+}
+
+/* ===== 링크 (호버 시 underline) ===== */
+.link-hover {
+  transition: color 0.3s ease;
+}
+.link-hover:hover {
+  text-decoration: underline;
+}
+
+/* ===== 카드 ===== */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+/* 호버 시 배경만 미세하게 변경 */
+.card-hover {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.card-hover:hover {
+  background: var(--surface-hover);
+}
+
+/* ===== 리스트 아이템 (사이드바) ===== */
+.list-item {
+  color: var(--text-sub);
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+.list-item:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+.list-item + .list-item {
+  border-top: 1px solid var(--divider);
+}
+.list-item-active {
+  background: var(--surface-hover);
+  color: var(--text);
+  font-weight: 600;
+}
+.list-item-active:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+/* 행 액션 버튼(삭제): 행에 마우스를 올리거나 포커스가 들어올 때만 보인다 */
+.row-action {
+  color: var(--text-sub);
+  cursor: pointer;
+  border-radius: var(--radius-pill);
+  transition:
+    opacity 0.3s ease,
+    color 0.3s ease,
+    background-color 0.3s ease;
+}
+.row-action:hover {
+  color: var(--text);
+  background: var(--badge-bg);
+}
+/* 삭제처럼 파괴적인 액션만 에러 컬러로 호버 */
+.row-action-danger:hover {
+  color: var(--error);
+}
+.row-action:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* 호버가 가능한 기기에서만 숨긴다 (터치 기기에서는 항상 보임) */
+@media (hover: hover) {
+  .row-action {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .list-item:hover .row-action,
+  .list-item:focus-within .row-action {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* ===== 버튼 ===== */
+.btn-primary {
+  background: var(--accent);
+  color: #ffffff;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.btn-primary:hover {
+  background: var(--accent-hover);
+}
+.btn-primary:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.btn-primary:disabled:hover {
+  background: var(--accent);
+}
+
+/* 파괴적 동작 버튼: 액센트 대신 에러 컬러 */
+.btn-danger {
+  background: var(--error);
+  color: #ffffff;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.btn-danger:hover {
+  background: var(--error-hover);
+}
+
+/* 보조 버튼: 투명 배경 + 액센트 텍스트 + 호버 underline */
+.btn-text {
+  color: var(--accent);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+.btn-text:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+/* ===== 입력 필드 / 셀렉트 ===== */
+.field {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-field);
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.field::placeholder {
+  color: var(--placeholder);
+}
+.field:focus {
+  border-color: var(--accent);
+  box-shadow: var(--focus-ring);
+  outline: none;
+}
+
+/* ===== 뱃지 ===== */
+.badge {
+  background: var(--badge-bg);
+  color: var(--text);
+  border-radius: var(--radius-pill);
+}
+
+/* ===== 모달 ===== */
+.modal-overlay {
+  background: rgba(0, 0, 0, 0.4);
+  cursor: default;
+  animation: modal-fade 0.2s ease;
+}
+
+.modal-panel {
+  background: var(--bg);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-modal);
+}
+
+@keyframes modal-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

@@ -1,19 +1,18 @@
 import NewLinkForm from "@/components/new-link-form";
-import type { Folder } from "@/lib/types";
 
-export default function NewLinkSection({ folders }: { folders: Folder[] }) {
+export default function NewLinkSection() {
   return (
-    <main className="min-w-0 flex-1 px-4 py-6 sm:px-6">
-      <div className="mx-auto flex w-full max-w-xl flex-col gap-5">
-        <div className="flex flex-col gap-1">
-          <h1 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+    <main className="min-w-0 flex-1">
+      <div className="mx-auto flex w-full max-w-[680px] flex-col gap-12">
+        <div className="flex flex-col gap-2">
+          <h1 className="text-[40px] leading-[1.1] font-semibold tracking-[-0.5px]">
             새 링크
           </h1>
-          <p className="text-sm text-zinc-500 dark:text-zinc-400">
+          <p className="text-[14px] leading-[1.4] text-[var(--text-sub)]">
             저장할 링크 주소와 폴더를 선택해 주세요.
           </p>
         </div>
-        <NewLinkForm folders={folders} />
+        <NewLinkForm />
       </div>
     </main>
   );

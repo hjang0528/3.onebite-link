@@ -1,19 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { FolderProvider } from "@/components/folder-store";
+import DeleteFolderModal from "@/components/delete-folder-modal";
+import EditFolderModal from "@/components/edit-folder-modal";
 import Header from "@/components/header";
+import NewFolderModal from "@/components/new-folder-modal";
 import Sidebar from "@/components/sidebar";
 import { folders, links } from "@/lib/mock-data";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "한입 링크",
@@ -22,18 +15,19 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="ko"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">
-        <div className="flex min-h-full flex-1 flex-col bg-white text-zinc-900 dark:bg-zinc-950 dark:text-zinc-50">
+    <html lang="ko" className="h-full antialiased">
+      <body className="flex min-h-full flex-col">
+        <FolderProvider initialFolders={folders}>
           <Header />
-          <div className="flex flex-1 flex-col sm:flex-row">
-            <Sidebar folders={folders} totalCount={links.length} />
+          <div className="mx-auto flex w-full max-w-[1080px] flex-1 flex-col gap-12 px-6 pt-14 pb-24 sm:flex-row">
+            <Sidebar totalCount={links.length} />
             {children}
           </div>
-        </div>
+          {/* 헤더의 backdrop-filter가 fixed 요소의 기준 박스가 되므로 헤더 밖에서 렌더 */}
+          <NewFolderModal />
+          <EditFolderModal />
+          <DeleteFolderModal />
+        </FolderProvider>
       </body>
     </html>
   );

@@ -1,21 +1,33 @@
-import SidebarItem from "@/components/sidebar-item";
-import type { Folder } from "@/lib/types";
+"use client";
 
-export default function FolderList({ folders }: { folders: Folder[] }) {
+import SidebarItem from "@/components/sidebar-item";
+import { useFolderStore } from "@/components/folder-store";
+
+export default function FolderList() {
+  const { folders, requestEditFolder, requestDeleteFolder } = useFolderStore();
+
+  if (folders.length === 0) return null;
+
   return (
-    <nav aria-label="폴더" className="flex flex-col gap-0.5">
-      <h2 className="px-3 pb-1.5 text-xs font-semibold tracking-wide text-zinc-400 uppercase dark:text-zinc-500">
+    <section className="flex flex-col gap-3">
+      <h2 className="px-1 text-[14px] leading-[1.4] text-[var(--text-sub)]">
         폴더
       </h2>
-      {folders.map((folder) => (
-        <SidebarItem
-          key={folder.id}
-          href={`/folder/${folder.id}`}
-          icon={folder.emoji}
-          label={folder.name}
-          count={folder.count}
-        />
-      ))}
-    </nav>
+      <nav aria-label="폴더" className="card flex flex-col overflow-hidden">
+        {folders.map((folder) => (
+          <SidebarItem
+            key={folder.id}
+            href={`/folder/${folder.id}`}
+            icon={folder.emoji}
+            label={folder.name}
+            count={folder.count}
+            onEdit={() => requestEditFolder(folder)}
+            editLabel={`${folder.name} 폴더 이름 수정`}
+            onDelete={() => requestDeleteFolder(folder)}
+            deleteLabel={`${folder.name} 폴더 삭제`}
+          />
+        ))}
+      </nav>
+    </section>
   );
 }
